@@ -1,3 +1,9 @@
+`AWS`の`Sigv4`を`Kotlin Multiplatform`で生成し、`S3`の`REST API`を叩きます。
+
+![Imgur](https://imgur.com/hMGLiuo.png)
+
+--- original README ---
+
 This is a Kotlin Multiplatform project targeting Android, Web.
 
 * `/composeApp` is for code that will be shared across your Compose Multiplatform applications.

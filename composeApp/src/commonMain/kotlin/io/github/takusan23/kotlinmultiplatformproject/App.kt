@@ -73,7 +73,6 @@ fun App() {
                 }
             }
             responseXml.value = response.bodyAsText()
-            println(responseXml.value)
         }
 
 
