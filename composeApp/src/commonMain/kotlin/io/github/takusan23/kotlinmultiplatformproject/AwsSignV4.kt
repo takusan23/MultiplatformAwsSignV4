@@ -1,6 +1,8 @@
 package io.github.takusan23.kotlinmultiplatformproject
 
 import io.ktor.http.Url
+import io.ktor.http.encodeURLParameter
+import io.ktor.http.encodeURLPath
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.datetime.Instant
@@ -48,12 +50,14 @@ internal fun generateAwsSign(
     requestHeader.putIfAbsent("x-amz-content-sha256", payloadSha256)
 
     // 1.正規リクエストを作成する
+    // パス、クエリパラメータは URL エンコードする
     // リスト系はアルファベットでソート
-    val canonicalUri = httpUrl.encodedPath.ifBlank { "/" }
+    val canonicalUri = httpUrl.encodedPath.encodeURLPath().ifBlank { "/" }
     val canonicalQueryString = httpUrl.parameters
         .names()
+        .map { it.encodeURLParameter() }
         .sortedBy { name -> name }
-        .associateWith { name -> httpUrl.parameters[name] }
+        .associateWith { name -> httpUrl.parameters[name]?.encodeURLParameter() }
         .toList()
         .joinToString(separator = "&") { (name, values) ->
             "$name=${values ?: ""}" // こっちはイコール
